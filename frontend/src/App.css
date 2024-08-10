@@ -1,0 +1,10 @@
+.fontStyle {
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+}
+
+
+.slick-prev, .slick-next {
+  display: none !important;
+}
+
