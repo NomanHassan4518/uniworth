@@ -30,8 +30,10 @@ const TopCategories = () => {
   ];
   return (
     <div className="px-[45px] py-[20px] grid grid-cols-3 ">
-    {categories.map((item) => (
-     <CategoryCard item={item}/>
+    {categories.map((item,index) => (
+     <div key={index}>
+      <CategoryCard item={item} />
+     </div>
     ))}
   </div>
   

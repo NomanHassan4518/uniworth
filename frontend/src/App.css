@@ -3,8 +3,40 @@
   font-style: normal;
 }
 
-
-.slick-prev, .slick-next {
+.slick-prev,
+.slick-next {
   display: none !important;
+}
+
+.ant-drawer-title {
+  text-align: center !important;
+  font-size: 25px !important;
+  font-weight: bolder !important;
+}
+
+.custom-scroll {
+  position: relative;
+  overflow-y: scroll;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 4px; /* Hide the default scrollbar */
+  height: 30px !important;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  width: 2px; /* Width of the custom scrollbar thumb */
+  background-color: #888;
+  border-radius: 10px;
+}
+
+.range-slider .range-slider__thumb{
+  background-color: red !important;
+  width: 13px !important;
+  height: 13px !important;
+}
+
+.range-slider .range-slider__range{
+  background-color: black !important;
 }
 
