@@ -155,7 +155,7 @@ const shipingFee=399
                 : location.pathname !== "/"
                 ? "translate-y-10 duration-0"
                 : "-translate-y-full"
-            } transition-transform duration-300 w-full fixed top-0 left-0 right-0 z-[1000000]`}
+            } transition-transform duration-300 w-full fixed top-0 left-0 right-0 z-[100]`}
           >
             <div
               className="flex items-center text-black space-x-2 cursor-pointer"
