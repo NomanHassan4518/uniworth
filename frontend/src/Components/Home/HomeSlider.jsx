@@ -5,6 +5,7 @@ import { MdNavigateNext } from "react-icons/md";
 import { MdNavigateBefore } from "react-icons/md";
 
 const HomeSlider = () => {
+  
   const carousel = useRef();
   const homeCarouselData = [
     {

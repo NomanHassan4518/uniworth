@@ -64,15 +64,15 @@ const discount=(
             %
           </p>
         </div>}
-        <div className="text-[#ed1c24] space-y-2 absolute right-2 top-52 opacity-0 group-hover:opacity-100">
+        <div className="text-gray-500 space-y-2 absolute right-2 top-52 opacity-0 group-hover:opacity-100">
           <p>
-            <MdOutlineShoppingCart className="text-[25px]" />
+            <MdOutlineShoppingCart className="text-[25px] hover:text-[#ed1c24]" />
           </p>
           <p>
-            <IoIosSearch className="text-[25px] transition-transform translate-x-14 group-hover:translate-x-0 duration-700" />
+            <IoIosSearch className="text-[25px] transition-transform translate-x-14 group-hover:translate-x-0 duration-700 hover:text-[#ed1c24]" />
           </p>
           <p>
-            <MdFavoriteBorder className="text-[25px]" />
+            <MdFavoriteBorder className="text-[25px] hover:text-[#ed1c24]" />
           </p>
         </div>
       </div>

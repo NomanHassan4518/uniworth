@@ -120,9 +120,9 @@ export const data = [
   {
     id:7,
     name:"1947 Grey Crew Neck T-shirt",
+    brand:"Graphic Tees",
     category:"Summer Collection",
     subCategory:"T Shirts",
-    brand:"Graphic Tees",
     totalPrice:2295,
     discountedPrice:1836,
     productedDetail:[
@@ -137,7 +137,7 @@ export const data = [
     ],
     size_stock: [
       { size: "S", stock: 100 },
-      { size: "M", stock: 20 },
+      { size: "M", stock: 0 },
       { size: "L", stock: 100 },
       { size: "XL", stock: 30 },
       { size: "XXL", stock: 10 },

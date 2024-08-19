@@ -5,15 +5,38 @@ import { IoMdMail } from "react-icons/io";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { FaGreaterThan, FaLessThan } from "react-icons/fa";
 import SimilarProducts from "../../Components/Products/SimilarProducts";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../Redux/Action/Action";
 
 const ProductDetail = () => {
   const [imgIndex, setImgIndex] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [detail, setDetail] = useState("block");
   const [shiping, setShiping] = useState("hidden");
-  const [productSize, setSize] = useState("");
-  const uri = useParams();
+  const [productSize, setSize] = useState(null);
+  const [sizeError,setSizeError]=useState(false)
   const location = useLocation();
+  const dispatch = useDispatch();
+  const uri = useParams();
   const productData = location.state;
+
+  const handleCart = (productData) => {
+    if(productSize!==null){
+      dispatch(
+        addToCart({ product: productData, quantity: quantity, size: productSize })
+      );
+    } else{
+      setSizeError(true)
+    }
+  };
+
+  const increaseQuantity = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const decreaseQuantity = () => {
+    setQuantity(quantity - 1);
+  };
   const price = productData.totalPrice
     .toFixed(2)
     .toString()
@@ -31,7 +54,6 @@ const ProductDetail = () => {
   const keys = productData.productedDetail.flatMap((item) => Object.keys(item));
   const convertKey = (key) => key.replace(/([a-z])([A-Z])/g, "$1 $2");
   const convertedKeys = [...new Set(keys.map(convertKey))];
-
 
   return (
     <div className="mt-14 fontStyle">
@@ -105,8 +127,8 @@ const ProductDetail = () => {
               className="uppercase pl-9 text-[16px] hover:text-[#ed1c24] font-semibold py-2 bg-[#f7f7f7] border-b cursor-pointer"
               onClick={() => {
                 setShiping(shiping === "block" ? "hidden" : "block");
-                setDetail("hidden") ;
-                window.scrollTo({top:"120",behavior:"smooth"})
+                setDetail("hidden");
+                window.scrollTo({ top: "120", behavior: "smooth" });
               }}
             >
               Shipping & Returns
@@ -156,18 +178,23 @@ const ProductDetail = () => {
           <div className="mt-4 mx-5  text-center">
             <div className="text-center font-semibold space-x-3 text-[17px]">
               <h1>Select Size: {productSize}</h1>
+              {sizeError && <p className="text-[#ed1c24] text-sm">Please select a size.</p>}
             </div>
             <div className="flex items-center flex-wrap justify-center justify-items-center   gap-4  mt-4 ">
               {productData.size_stock.map((size, index) => (
-                <div>
+                <div key={index}>
                   <button
-                    key={index}
-                    onClick={()=>setSize(size.size)}
+                    onClick={() => {setSize(size.size); setSizeError(false)}}
                     disabled={size.stock === 0}
                     style={{
-                      backgroundImage: size.stock===0?`url("https://i.imgur.com/Kygs9gR.png")`:"",
+                      backgroundImage:
+                        size.stock === 0
+                          ? `url("https://i.imgur.com/Kygs9gR.png")`
+                          : "",
                     }}
-                    className={`text-[19px] flex ${productSize===size.size?"bg-[#e5e4e4]":"bg-white"}  items-center justify-center w-[50px] h-[50px] border rounded-full `}
+                    className={`text-[19px] flex ${
+                      productSize === size.size ? "bg-[#e5e4e4]" : "bg-white"
+                    }  items-center justify-center w-[50px] h-[50px] border rounded-full `}
                   >
                     {size.size}
                   </button>
@@ -181,17 +208,24 @@ const ProductDetail = () => {
               <h1>Quantity:</h1>
             </div>
             <div className="flex items-center justify-center text-[15px] mt-4 font-bold">
-              <p className="px-5 py-2 border">
+              <button
+                className="px-5 py-2 border"
+                onClick={decreaseQuantity}
+                disabled={quantity === 1}
+              >
                 <FaLessThan />
-              </p>
-              <p className="px-8 py-1 border">1</p>
-              <p className="px-5 py-2 border">
+              </button>
+              <p className="px-8 py-1 border">{quantity}</p>
+              <button className="px-5 py-2 border" onClick={increaseQuantity}>
                 <FaGreaterThan />
-              </p>
+              </button>
             </div>
           </div>
-          <div className="mt-10 flex justify-center">
-            <button className="bg-[#cb9a51] text-white py-2 px-20 uppercase font-semibold flex items-center space-x-2">
+          <div className={`mt-10 flex justify-center  ${sizeError?"animate-shake":""}`}>
+            <button
+              className="bg-[#cb9a51] text-white py-2 px-20 uppercase font-semibold flex items-center space-x-2"
+              onClick={() => handleCart(productData)}
+            >
               <MdOutlineShoppingCart className="text-[25px]" />
               <p>Add to cart</p>
             </button>
@@ -216,7 +250,7 @@ const ProductDetail = () => {
         </div>
       </div>
       <div className="mt-6">
-        <SimilarProducts id={productData.id}/>
+        <SimilarProducts id={productData.id} />
       </div>
     </div>
   );

@@ -15,7 +15,9 @@ const SimilarProducts = ({id}) => {
      <div className='grid grid-cols-5 gap-4'>
      {
          similarProducts.slice(0,5).map((item,index)=>(
-            <ProductCard product={item} height={{boxHeight:"380px",imgHeight:"280px"}}/>
+          <div key={index}>
+              <ProductCard product={item} height={{boxHeight:"380px",imgHeight:"280px"}}/>
+          </div>
           ))
      }
     </div>

@@ -64,7 +64,7 @@ const NotificationBar = () => {
             <div className="py-1">
               <MenuItem>
                 <Link
-                  to="/"
+                  to="/signin"
                   className="text-black text-[14px] block font-semibold"
                 >
                   Login
@@ -72,7 +72,7 @@ const NotificationBar = () => {
               </MenuItem>
               <MenuItem>
                 <Link
-                  to="/"
+                  to="/register"
                   className="text-black text-[14px] block font-semibold mt-1"
                 >
                   Register

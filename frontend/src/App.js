@@ -9,25 +9,44 @@ import ProductDetail from "./Pages/Products/ProductDetail";
 import ScrollToTop from "./Components/ScrollToTop";
 import ProductCart from "./Pages/Products/ProductCart";
 import Checkout from "./Pages/Checkout";
+import Login from "./Pages/Account/Login";
+import Register from "./Pages/Account/Register";
+// import { useDispatch, useSelector } from "react-redux";
+// import { useEffect } from "react";
+// import { emptyCartData } from "./Redux/Action/Action";
+
 
 function App() {
-  const location=useLocation();
-  console.log(location);
+  const location = useLocation();
+  // const dispatch=useDispatch()
+  // const data=useSelector((state)=>state.cartData)
+  // console.log(data);
+
+  // useEffect(()=>{
+   
+  // },[dispatch])
+// let index=2
+//   const handle=()=>{
+//     dispatch(emptyCartData())
+//   }
   
 
   return (
     <div className="">
-      {location.pathname!=="/checkout" &&   <NotificationBar />} 
-        <Navbar />
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/:category" element={<Products />} />
-          <Route path="/:category/:name" element={<ProductDetail />} />
-          <Route path="/shoping-cart" element={<ProductCart />} />
-          <Route path="/checkout" element={<Checkout />} />
-        </Routes>
-        <Footer />
+      {/* <button className="mb-32" onClick={ handle}>Hassan</button> */}
+      {location.pathname !== "/checkout" && <NotificationBar />}
+      <Navbar />
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/:category" element={<Products />} />
+        <Route path="/:category/:name" element={<ProductDetail />} />
+        <Route path="/shoping-cart" element={<ProductCart />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/signin" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+      <Footer />
     </div>
   );
 }

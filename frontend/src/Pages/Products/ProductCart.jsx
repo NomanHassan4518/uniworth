@@ -1,23 +1,35 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { data } from "../../Components/data";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { removeProduct, increaseQuantity, decreaseQuantity } from "../../Redux/Action/Action";
 
 const ProductCart = () => {
-  const qyn = 2;
-  let subtotal = 0;
-  const findSubtotal = data.map(
-    (product) => (subtotal += product.discountedPrice)
-  );
-  console.log(findSubtotal, subtotal);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const cartData = useSelector((state) => state);  
+  const cartItems =cartData.cartData ;  
+  let subtotal = cartData.totalDiscountedPrice;
+const shipingFee=399
 
-  //  const price = productData.totalPrice
-  //   .toFixed(2)
-  //   .toString()
-  //   .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  // const discountedPrice = productData.discountedPrice
-  //   .toFixed(2)
-  //   .toString()
-  //   .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      navigate("/");
+    }
+  });
+
+  const removeItem = (index) => {
+    dispatch(removeProduct(index));
+  };
+
+  const increaseProductQuantity = (index) => {
+    dispatch(increaseQuantity(index));
+  };
+
+  const decreaseProductQuantity=(index)=>{
+    dispatch(decreaseQuantity(index))
+  }
+
+
 
   return (
     <div className="mt-14 fontStyle">
@@ -42,30 +54,30 @@ const ProductCart = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((product, index) => (
+            {cartItems?.map((item, index) => (
               <tr key={index} className="border-b ">
                 <td className=" flex justify-center py-2">
                   <img
                     className="w-[100px] h-[100px] object-contain"
-                    src={product.images[0]}
+                    src={item.product.images[0]}
                     alt=""
                   />
                 </td>
                 <td className=" text-center">
-                  <p className="font-semibold">{product.name}</p>
-                  <p>Size: S</p>
+                  <p className="font-semibold">{item.product.name}</p>
+                  <p>Size: {item.size} </p>
                 </td>
                 <td>
                   <p className="font-semibold">
                     Rs.
-                    {product.discountedPrice
+                    {item.product.discountedPrice
                       .toFixed(2)
                       .toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                   </p>
                   <p className="text-gray-600 line-through">
                     Rs.
-                    {product.totalPrice
+                    {item.product.totalPrice
                       .toFixed(2)
                       .toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -73,15 +85,25 @@ const ProductCart = () => {
                 </td>
                 <td>
                   <div className="flex items-center justify-center text-[15px] mt-4 font-bold">
-                    <p className="px-5 py-1 border">-</p>
-                    <p className="px-8 py-1 border">{qyn}</p>
-                    <p className="px-5 py-1 border">+</p>
+                    <button className="px-5 py-1 border" onClick={()=>decreaseProductQuantity(index)}>-</button>
+                    <p className="px-8 py-1 border">{item.quantity}</p>
+                    <button
+                      className="px-5 py-1 border"
+                      onClick={() => increaseProductQuantity(index)}
+                    >
+                      +
+                    </button>
                   </div>
                 </td>
-                <td className="text-red-600 font-semibold">Remove</td>
+                <td
+                  className="text-red-600 font-semibold cursor-pointer"
+                  onClick={() => removeItem(index)}
+                >
+                  Remove
+                </td>
                 <td className="text-green-600 text-xl font-semibold">
                   Rs.
-                  {(product.discountedPrice * qyn)
+                  {(item.product.discountedPrice * item.quantity)
                     .toFixed(2)
                     .toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -91,32 +113,49 @@ const ProductCart = () => {
           </tbody>
         </table>
       </div>
-   <div className=" mt-4 space-y-3">
-   <div className="flex items-center  justify-end w-full ">
-          <p className="text-lg font-semibold w-[200px] ">Subtotal: </p> 
-          <p className="text-xl font-bold w-[220px] ">Rs.
-          {subtotal
-            .toFixed(2)
-            .toString()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>   
+      <div className=" mt-4 space-y-3">
+        <div className="flex items-center  justify-end w-full ">
+          <p className="text-lg font-semibold w-[200px] ">Subtotal: </p>
+          <p className="text-xl font-bold w-[220px] ">
+            Rs.
+            {subtotal
+              .toFixed(2)
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </p>
+        </div>
+        <div className="flex items-center  justify-end w-full ">
+          <p className="text-lg font-semibold w-[200px]  ">Shipping: </p>
+          <p className="text-xl font-bold w-[220px] ">Rs.{shipingFee
+              .toFixed(2)
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+        </div>
+        <div className="flex items-center  justify-end w-full ">
+          <p className="text-lg font-semibold w-[200px] ">Total: </p>
+          <p className="text-xl font-bold w-[220px] ">
+            Rs.
+            {(subtotal + shipingFee)
+              .toFixed(2)
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </p>
+        </div>
       </div>
-   <div className="flex items-center  justify-end w-full ">
-          <p className="text-lg font-semibold w-[200px]  ">Shipping: </p> 
-          <p className="text-xl font-bold w-[220px] ">Rs. 0.00</p>   
+      <div className="mt-8 mr-16 flex items-center justify-end space-x-4">
+        <Link
+          to="/"
+          className="py-2 px-5 text-white bg-black font-semibold uppercase"
+        >
+          Continue Shopping
+        </Link>
+        <Link
+          to="/checkout"
+          className="px-8 py-2 text-white bg-[#ed1c24] font-semibold uppercase"
+        >
+          Checkout
+        </Link>
       </div>
-      <div className="flex items-center  justify-end w-full ">
-          <p className="text-lg font-semibold w-[200px] ">Total: </p> 
-          <p className="text-xl font-bold w-[220px] ">Rs.
-          {subtotal
-            .toFixed(2)
-            .toString()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>   
-      </div>
-   </div>
-   <div className="mt-8 mr-16 flex items-center justify-end space-x-4">
-    <Link to="/" className="py-2 px-5 text-white bg-black font-semibold uppercase">Continue Shopping</Link>
-    <Link to="/checkout" className="px-8 py-2 text-white bg-[#ed1c24] font-semibold uppercase">Checkout</Link>
-   </div>
     </div>
   );
 };

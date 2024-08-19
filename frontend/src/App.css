@@ -40,3 +40,7 @@
   background-color: black !important;
 }
 
+.boxHeight {
+  height: calc(100% - 4rem);
+}
+
