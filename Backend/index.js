@@ -7,9 +7,13 @@ const app = express();
 require("./start/database")();
 require("./start/routes")(app);
 
+app.get("/",(req,res)=>{
+  res.send("Noman Hassan")
+})
+
 // app.use(express.static(path.join(__dirname, "public")));
 
-const port = 3000;
+const port = 5000;
 app.listen(port, () => {
   consoleLogger.info(`server running on port:${port}`);
 });
