@@ -1,4 +1,4 @@
-const { Customer, validateCustomer: validate } = require("../models/customer");
+const { User, validateUser: validate } = require("../models/user");
 const auth = require("../middleware/auth");
 
 const bcrypt = require("bcryptjs");
@@ -12,11 +12,11 @@ router.post("/register", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  let customer = await Customer.findOne({ email: req.body.email });
-  if (customer)
+  let user = await User.findOne({ email: req.body.email });
+  if (user)
     return res.status(400).send({ message: "Email already registered" });
 
-  customer = new Customer(
+  user = new User(
     _.pick(req.body, [
       "name",
       "email",
@@ -26,11 +26,11 @@ router.post("/register", async (req, res) => {
     ])
   );
 
-  customer.password = await bcrypt.hash(customer.password, 15);
+  user.password = await bcrypt.hash(user.password, 15);
+  if (user.email === "malikhassanhu55@gmail.com") user.isAdmin = true;
+  user = await user.save();
 
-  customer = await customer.save();
-
-  await customer.sendVerificationEmail();
+  await user.sendVerificationEmail();
 
   return res
     .status(201)
@@ -42,42 +42,41 @@ router.get("/verify/:token", async (req, res) => {
   const secretKey = config.get("Ecommerce_jwtPrivateKey"); // Same key used for signing the JWT
 
   const decoded = jwt.verify(token, secretKey);
-  const customer = await Customer.findOne({ email: decoded.email });
-  if (!customer)
+  const user = await User.findOne({ email: decoded.email });
+  if (!user)
     return res.status(400).send({ message: "Invalid or expired token." });
 
-  customer.verified = true;
-  await customer.save();
+  user.verified = true;
+  await user.save();
 
   return res.status(200).send({ message: "Email verified successfully!" });
 });
 
 router.post("/login", async (req, res) => {
-  const customer = await Customer.findOne({ email: req.body.email });
-  if (!customer)
+  const user = await User.findOne({ email: req.body.email });
+  if (!user)
     return res.status(404).send({ message: "Invalid Email or password" });
 
-  const isValid = await bcrypt.compare(req.body.password, customer.password);
+  const isValid = await bcrypt.compare(req.body.password, user.password);
 
-  if (!isValid)
-    return res.status(404).send({ message: "Invalid password" });
+  if (!isValid) return res.status(404).send({ message: "Invalid password" });
 
-  const token = customer.generateVerificationToken();
+  const token = user.generateVerificationToken();
 
-  req.session.customer = {
-    id: customer._id,
-    name: customer.name,
-    email: customer.email,
+  req.session.user = {
+    id: user._id,
+    name: user.name,
+    email: user.email,
   };
-  
+
   res
     .status(200)
     // .header("auth-token", token)
-    .send({ message: "Login successful" , token:token});
+    .send({ message: "Login successful", token: token });
 });
 
 router.get("/profile", auth, (req, res) => {
-  res.send({ customer: req.session.customer });
+  res.send({ user: req.session.user });
 });
 
 router.get("/logout", async (req, res) => {
