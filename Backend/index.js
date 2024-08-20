@@ -18,3 +18,6 @@ const port = 5000;
 app.listen(port, () => {
   consoleLogger.info(`server running on port:${port}`);
 });
+
+
+module.exports=app
