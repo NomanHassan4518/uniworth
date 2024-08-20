@@ -47,7 +47,7 @@ customerSchema.methods.generateVerificationToken = function () {
   };
   const secretKey = config.get("Ecommerce_jwtPrivateKey");
   const options = {
-    expiresIn: "120s",
+    expiresIn: "48h",
   };
 
   return jwt.sign(payload, secretKey, options);
