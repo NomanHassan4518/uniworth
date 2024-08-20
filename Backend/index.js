@@ -1,12 +1,12 @@
 // const { consoleLogger } = require("./start/logging");
 const express = require("express");
-// require("express-async-errors");
-// require("dotenv").config();
+require("express-async-errors");
+require("dotenv").config();
 const app = express();
 app.use(express.json());
 // const path = require("path");
-// require("./start/database")();
-// require("./start/routes")(app);
+require("./start/database")();
+require("./start/routes")(app);
 
 app.get("/",(req,res)=>{
   res.send("Noman Hassan")
