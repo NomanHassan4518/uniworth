@@ -91,6 +91,11 @@ const validateCustomer = function (user) {
     email: Joi.string().email().required(),
     password: Joi.string().min(10).max(50).trim().required(),
     phoneNumber: Joi.string().max(25).trim().required(),
+    dateOfBirth:{
+      date:Joi.number().integer().required(),
+      month:Joi.string().required(),
+      year:Joi.number().integer().required()
+    }
   });
   return schema.validate(user);
 };

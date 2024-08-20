@@ -6,7 +6,7 @@ const _ = require("lodash");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const express = require("express");
-const router = express.Router(); 
+const router = express.Router();
 
 router.post("/register", async (req, res) => {
   const { error } = validate(req.body);
@@ -57,9 +57,10 @@ router.post("/login", async (req, res) => {
   if (!customer)
     return res.status(404).send({ message: "Invalid Email or password" });
 
-  const isValid = bcrypt.compare(req.body.password, customer.password);
+  const isValid = await bcrypt.compare(req.body.password, customer.password);
+
   if (!isValid)
-    return res.status(404).send({ message: "Invalid Email or password" });
+    return res.status(404).send({ message: "Invalid password" });
 
   const token = customer.generateVerificationToken();
 
@@ -68,10 +69,11 @@ router.post("/login", async (req, res) => {
     name: customer.name,
     email: customer.email,
   };
+  
   res
     .status(200)
-    .header("auth-token", token)
-    .send({ message: "Login successful" });
+    // .header("auth-token", token)
+    .send({ message: "Login successful" , token:token});
 });
 
 router.get("/profile", auth, (req, res) => {

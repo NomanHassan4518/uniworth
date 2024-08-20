@@ -2,31 +2,59 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Spinner from "../../Components/Spinner";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassowrd] = useState("");
   const [error, setError] = useState(false);
   const [isValid, setValid] = useState(true);
+  const [loading,setLoading]=useState(false)
 
   const validateEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     setValid(emailRegex.test(email) && email.endsWith("@gmail.com"));
   };
 
-  console.log(isValid);
-
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (email === "" || password === "") {
       setError(true);
-    } else if (isValid===false) {
+    } else if (isValid === false) {
       toast.error("Enter your Gmail account");
+    } else {
+      try {
+        setLoading(true)
+       await fetch("http://localhost:5000/api/customers/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        })
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {          
+          if(data.message==='Login successful'){
+            toast.success(data.message)            
+            localStorage.setItem('authToken', data.token);
+          } else{
+            toast.error(data.message)
+          }
+        })
+      }  finally{
+        setLoading(false)
+      }
+    
     }
   };
 
   return (
     <>
-      <ToastContainer position="top-left" />
+      {
+        loading? <Spinner/>:
+      <>
+        <ToastContainer position="top-left" />
       <div className="mt-14 fontStyle ">
         <div className="flex items-center space-x-4 px-10 py-1 fontStyle  bg-[#f8f8f8]">
           <Link to="/">Home</Link>
@@ -110,6 +138,8 @@ const Login = () => {
           </div>
         </div>
       </div>
+      </>
+      }
     </>
   );
 };
