@@ -1,0 +1,4 @@
+{
+    "db":"mongodb://malikhassanhu55:w8UAFAdHyhhOVSAj@cluster0-shard-00-00.0xvuz.mongodb.net:27017,cluster0-shard-00-01.0xvuz.mongodb.net:27017,cluster0-shard-00-02.0xvuz.mongodb.net:27017/?ssl=true&replicaSet=atlas-12e7gq-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0",
+    "Ecommerce_jwtPrivateKey":"mySecyreKey"
+}
