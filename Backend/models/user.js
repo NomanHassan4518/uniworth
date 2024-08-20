@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const config = require("config");
 
-const customerSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
     minlength: 5,
@@ -32,7 +32,7 @@ const customerSchema = new mongoose.Schema({
     trim: true,
     required: true,
   },
-  dateOfBirth: { 
+  dateOfBirth: {
     date: {
       type: Number,
     },
@@ -47,9 +47,14 @@ const customerSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  isAdmin: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
 
-customerSchema.methods.generateVerificationToken = function () {
+userSchema.methods.generateVerificationToken = function () {
   const payload = {
     email: this.email,
   };
@@ -60,7 +65,7 @@ customerSchema.methods.generateVerificationToken = function () {
 
   return jwt.sign(payload, secretKey, options);
 };
-customerSchema.methods.sendVerificationEmail = async function () {
+userSchema.methods.sendVerificationEmail = async function () {
   const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -83,25 +88,25 @@ customerSchema.methods.sendVerificationEmail = async function () {
 
   await transporter.sendMail(mailOptions);
 };
-const Customer = mongoose.model("Customer", customerSchema);
+const User = mongoose.model("User", userSchema);
 
-const validateCustomer = function (user) {
+const validateUser = function (user) {
   const schema = Joi.object({
     name: Joi.string().min(5).max(50).trim().required(),
     email: Joi.string().email().required(),
     password: Joi.string().min(10).max(50).trim().required(),
     phoneNumber: Joi.string().max(25).trim().required(),
-    dateOfBirth:{
-      date:Joi.number().integer().required(),
-      month:Joi.string().required(),
-      year:Joi.number().integer().required()
-    }
+    dateOfBirth: {
+      date: Joi.number().integer().required(),
+      month: Joi.string().required(),
+      year: Joi.number().integer().required(),
+    },
   });
   return schema.validate(user);
 };
 
 module.exports = {
-  validateCustomer,
-  Customer,
-  customerSchema,
+  validateUser,
+  User,
+  userSchema,
 };

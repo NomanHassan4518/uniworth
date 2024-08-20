@@ -1,5 +1,5 @@
 const express = require("express");
-const customers = require("../routes/customers");
+const users = require("../routes/users");
 const error = require("../middleware/error");
 const session = require("express-session");
 
@@ -13,6 +13,6 @@ module.exports = function (app) {
       cookie: { secure: false, maxAge: 120000 },
     })
   );
-  app.use("/api/customers/", customers);
+  app.use("/api/users/", users);
   app.use(error);
 };
