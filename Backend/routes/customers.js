@@ -72,7 +72,6 @@ router.post("/login", async (req, res) => {
   
   res
     .status(200)
-    // .header("auth-token", token)
     .send({ message: "Login successful" , token:token});
 });
 

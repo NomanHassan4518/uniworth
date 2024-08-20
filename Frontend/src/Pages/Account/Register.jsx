@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Register = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState(false);
+
+  const [dateOfBirth, setDateOfBirth] = useState({
+    date: "Date",
+    month: "Month",
+    year: "Year",
+  });
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
   const dates = ["Date", ...days];
   const months = [
@@ -22,6 +34,18 @@ const Register = () => {
   const year = Array.from({ length: 2005 - 1950 }, (_, i) => 1950 + i);
   const years = ["Year", ...year];
 
+  const handleRegister = () => {
+    if (
+      name === "" ||
+      email === "" ||
+      phoneNumber === "" ||
+      password === "" ||
+      confirmPassword === ""
+    ) {
+      setError(true);
+    }
+  };
+
   return (
     <div className="mt-14 fontStyle ">
       <div className="flex items-center space-x-4 px-10 py-1 fontStyle  bg-[#f8f8f8]">
@@ -40,8 +64,14 @@ const Register = () => {
               </label>
               <input
                 type="text"
+                value={name}
+                onChange={(e)=>setName(e.target.value)}
                 placeholder="Enter your Name"
-                className="border py-3 px-6 mt-1 w-full placeholder:text-sm text-gray-500 focus:outline-none"
+                className={`${
+                  error && !name
+                    ? "border border-[#ed1c24] placeholder:text-[#ed1c24]"
+                    : "border"
+                } py-3 px-6 mt-1 w-full placeholder:text-sm text-gray-500 focus:outline-none`}
               />
             </div>
             <div>
@@ -50,8 +80,14 @@ const Register = () => {
               </label>
               <input
                 type="email"
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
                 placeholder="Email address"
-                className="border py-3 px-6 mt-1 w-full placeholder:text-sm text-gray-500 focus:outline-none"
+                className={`${
+                  error && !email
+                    ? "border border-[#ed1c24] placeholder:text-[#ed1c24]"
+                    : "border"
+                } py-3 px-6 mt-1 w-full placeholder:text-sm text-gray-500 focus:outline-none`}
               />
             </div>
             <div>
@@ -60,8 +96,14 @@ const Register = () => {
               </label>
               <input
                 type="text"
+                value={phoneNumber}
+                onChange={(e)=>setPhoneNumber(e.target.value)}
                 placeholder="Enter your Mobile No"
-                className="border py-3 px-6 mt-1 w-full placeholder:text-sm text-gray-500 focus:outline-none"
+                className={`${
+                  error && !phoneNumber
+                    ? "border border-[#ed1c24] placeholder:text-[#ed1c24]"
+                    : "border"
+                } py-3 px-6 mt-1 w-full placeholder:text-sm text-gray-500 focus:outline-none`}
               />
             </div>
             <div>
@@ -69,24 +111,24 @@ const Register = () => {
                 Date of Birth
               </label>
               <div className="grid grid-cols-3 gap-4">
-                <select className="border py-3 px-6 mt-1 w-full appearance-none">
+                <select className="border py-3 px-6 mt-1 w-full appearance-none focus:outline-none">
                   {dates.map((day, index) => (
-                    <option key={index} value={day}>
+                    <option key={index} value={dateOfBirth.date} className="">
                       {day}
                     </option>
                   ))}
                 </select>
-                <select className="border py-3 px-6 mt-1 w-full appearance-none">
-                  {months.map((day, index) => (
-                    <option key={index} value={day}>
-                      {day}
+                <select className="border py-3 px-6 mt-1 w-full appearance-none focus:outline-none">
+                  {months.map((month, index) => (
+                    <option key={index} value={dateOfBirth.month}>
+                      {month}
                     </option>
                   ))}
                 </select>
-                <select className="border py-3 px-6 mt-1 w-full appearance-none">
-                  {years.map((day, index) => (
-                    <option key={index} value={day}>
-                      {day}
+                <select className="border py-3 px-6 mt-1 w-full appearance-none focus:outline-none">
+                  {years.map((year, index) => (
+                    <option key={index} value={dateOfBirth.year}>
+                      {year}
                     </option>
                   ))}
                 </select>
@@ -98,8 +140,14 @@ const Register = () => {
               </label>
               <input
                 type="password"
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="border py-3 px-6 mt-1 w-full placeholder:text-sm text-gray-500 focus:outline-none"
+                className={`${
+                  error && !password
+                    ? "border border-[#ed1c24] placeholder:text-[#ed1c24]"
+                    : "border"
+                } py-3 px-6 mt-1 w-full placeholder:text-sm text-gray-500 focus:outline-none`}
               />
             </div>
             <div className="">
@@ -108,12 +156,21 @@ const Register = () => {
               </label>
               <input
                 type="password"
+                value={confirmPassword}
+                onChange={(e)=>setConfirmPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="border py-3 px-6 mt-1 w-full placeholder:text-sm text-gray-500 focus:outline-none"
+                className={`${
+                  error && !confirmPassword
+                    ? "border border-[#ed1c24] placeholder:text-[#ed1c24]"
+                    : "border"
+                } py-3 px-6 mt-1 w-full placeholder:text-sm text-gray-500 focus:outline-none`}
               />
             </div>
           </div>
-          <button className="mt-8 block text-white text-[14px] font-semibold bg-[#ed1c24] uppercase py-2 px-9">
+          <button
+            className="mt-8 block text-white text-[14px] font-semibold bg-[#ed1c24] uppercase py-2 px-9"
+            onClick={handleRegister}
+          >
             Create Account
           </button>
         </div>
