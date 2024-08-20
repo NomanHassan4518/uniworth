@@ -6,7 +6,7 @@ module.exports = function () {
   mongoose
     .connect(db)
     .then(() => {
-      consoleLogger.info(`Connected to database:${db}`);
+      consoleLogger.info(`Connected to database`);
     })
     .catch(() => {
       consoleLogger.error(`Failed to connect with ${db}`);
