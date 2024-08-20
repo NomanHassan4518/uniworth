@@ -32,8 +32,16 @@ const customerSchema = new mongoose.Schema({
     trim: true,
     required: true,
   },
-  dateOfBirth: {
-    type: Date,
+  dateOfBirth: { 
+    date: {
+      type: Number,
+    },
+    month: {
+      type: String,
+    },
+    year: {
+      type: Number,
+    },
   },
   verified: {
     type: Boolean,

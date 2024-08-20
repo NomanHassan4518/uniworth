@@ -6,7 +6,7 @@ const _ = require("lodash");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const express = require("express");
-const router = express.Router();
+const router = express.Router(); 
 
 router.post("/register", async (req, res) => {
   const { error } = validate(req.body);

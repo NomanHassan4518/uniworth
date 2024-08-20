@@ -1,12 +1,12 @@
-const { consoleLogger } = require("./start/logging");
+// const { consoleLogger } = require("./start/logging");
 const express = require("express");
-require("express-async-errors");
-require("dotenv").config();
+// require("express-async-errors");
+// require("dotenv").config();
 const app = express();
 app.use(express.json());
 // const path = require("path");
-require("./start/database")();
-require("./start/routes")(app);
+// require("./start/database")();
+// require("./start/routes")(app);
 
 app.get("/",(req,res)=>{
   res.send("Noman Hassan")
@@ -16,5 +16,6 @@ app.get("/",(req,res)=>{
 
 const port = 5000;
 app.listen(port, () => {
-  consoleLogger.info(`server running on port:${port}`);
+console.log("Server is running on:",port);
+
 });
